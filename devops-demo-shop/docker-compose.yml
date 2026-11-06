@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    container_name: devops-demo-app
+    ports: ["8000:8000"]
+    environment:
+      DATABASE_URL: postgresql://devops:devops@postgres:5432/devops_demo
+      ENABLE_FAULTS: "true"
+      LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+  postgres:
+    image: postgres:16-alpine
+    container_name: devops-demo-postgres
+    environment:
+      POSTGRES_DB: devops_demo
+      POSTGRES_USER: devops
+      POSTGRES_PASSWORD: devops
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U devops -d devops_demo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+volumes:
+  postgres_data:

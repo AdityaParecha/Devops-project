@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DevOps Demo Shop</title>
+<style>
+body{margin:0;background:#f5f7fb;color:#172033;font-family:system-ui,sans-serif}header{background:#172033;color:white;padding:24px 6%}main{max-width:1050px;margin:25px auto;padding:0 18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px #0000000d;margin-bottom:15px}.stat{font-size:28px;font-weight:700}button{background:#172033;color:white;border:0;border-radius:7px;padding:9px 14px}select,input{padding:9px;border:1px solid #ccd2dc;border-radius:7px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid #eee}.ok{color:#16803a}.bad{color:#b42318}.muted{color:#667085}
+</style></head><body>
+<header><h1>DevOps Demo Shop</h1><div>Simple workload for monitoring, incident detection and autonomous remediation.</div></header>
+<main>
+<div class="grid">
+<div class="card"><div class="muted">Products</div><div id="products" class="stat">-</div></div>
+<div class="card"><div class="muted">Orders</div><div id="orders" class="stat">-</div></div>
+<div class="card"><div class="muted">Revenue</div><div id="revenue" class="stat">-</div></div>
+<div class="card"><div class="muted">Service</div><div id="health" class="stat">...</div></div>
+</div>
+<div class="card"><h2>Create order</h2><div class="row"><select id="product"></select><input id="qty" type="number" min="1" max="20" value="1"><button onclick="order()">Create order</button><span id="msg" class="muted"></span></div></div>
+<div class="card"><h2>Recent orders</h2><table><thead><tr><th>ID</th><th>Product</th><th>Qty</th><th>Total</th><th>Created</th></tr></thead><tbody id="table"></tbody></table></div>
+<div class="card"><h2>Fault injection</h2><div class="muted">Controlled test endpoints. These intentionally create observable incidents.</div>
+<p><a href="/api/fault/slow?seconds=5" target="_blank">Slow</a> &nbsp; <a href="/api/fault/error" target="_blank">500 error</a> &nbsp; <a href="/api/fault/cpu?seconds=10" target="_blank">CPU</a> &nbsp; <a href="/api/fault/memory?mb=100" target="_blank">Memory</a></p></div>
+</main>
+<script>
+async function j(u,o){let r=await fetch(u,o),d=await r.json();if(!r.ok)throw Error(d.detail||"request failed");return d}
+async function refresh(){try{let [s,p,o,h]=await Promise.all([j("/api/stats"),j("/api/products"),j("/api/orders"),j("/api/health")]);
+products.textContent=s.products;orders.textContent=s.orders;revenue.textContent="₹"+s.revenue.toFixed(2);health.textContent=h.status.toUpperCase();health.className="stat ok";
+if(!product.options.length)product.innerHTML=p.map(x=>`<option value="${x.id}">${x.name} — ₹${x.price.toFixed(2)}</option>`).join("");
+table.innerHTML=o.map(x=>`<tr><td>${x.id}</td><td>${x.product}</td><td>${x.quantity}</td><td>₹${x.total.toFixed(2)}</td><td>${new Date(x.created_at).toLocaleString()}</td></tr>`).join("");
+}catch(e){health.textContent="DOWN";health.className="stat bad";msg.textContent=e.message}}
+async function order(){try{let d=await j("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:+product.value,quantity:+qty.value})});msg.textContent="Order #"+d.id+" created";refresh()}catch(e){msg.textContent=e.message}}
+refresh();setInterval(refresh,5000)
+</script></body></html>

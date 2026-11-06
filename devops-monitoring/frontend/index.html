@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>AI DevOps Control Center</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">A</div><div><strong>OpsPilot</strong><small>AI DEVOPS PLATFORM</small></div></div>
+    <nav><a class="active" href="#overview">◫ <span>Overview</span></a><a href="#servers">▦ <span>Infrastructure</span></a><a href="#agent">✧ <span>AI Agent</span></a><a href="#activity">≋ <span>Activity & Logs</span></a></nav>
+    <div class="sidebar-bottom"><span class="pulse"></span><div><b>Monitoring active</b><small>Zabbix · Loki · SSH</small></div></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><div class="eyebrow">OPERATIONS / CONTROL CENTER</div><h1>Infrastructure overview</h1><p>Observe incidents, investigate with AI, and approve safe remediation.</p></div><div class="top-actions"><span class="live-pill"><i></i> LIVE MONITORING</span><button class="btn btn-quiet" id="refreshBtn">↻ Refresh</button></div></header>
+    <section class="integration-row" id="integrations">
+      <div class="integration"><span class="integration-icon purple">Z</span><div><b>Zabbix</b><small id="zabbixState">Checking…</small></div><i class="dot" id="zabbixDot"></i></div>
+      <div class="integration"><span class="integration-icon orange">L</span><div><b>Loki</b><small id="lokiState">Checking…</small></div><i class="dot" id="lokiDot"></i></div>
+      <div class="integration"><span class="integration-icon green">G</span><div><b>Grafana</b><small id="grafanaState">Checking…</small></div><i class="dot" id="grafanaDot"></i></div>
+      <div class="integration"><span class="integration-icon blue">AI</span><div><b>Mistral Agent</b><small id="modelState">Checking…</small></div><i class="dot" id="agentDot"></i></div>
+    </section>
+    <section class="summary-grid" id="overview">
+      <article class="summary-card"><div class="summary-top"><span>MANAGED HOSTS</span><span class="summary-icon">▦</span></div><strong id="hostCount">—</strong><small>Frontend · Backend · Database</small></article>
+      <article class="summary-card"><div class="summary-top"><span>ACTIVE PROBLEMS</span><span class="summary-icon red">!</span></div><strong id="problemCount">—</strong><small>Current Zabbix problem events</small></article>
+      <article class="summary-card"><div class="summary-top"><span>AI AGENT</span><span class="summary-icon blue">✧</span></div><strong id="agentReady">READY</strong><small>Observe → Reason → Plan → Verify</small></article>
+      <article class="summary-card"><div class="summary-top"><span>LAST UPDATED</span><span class="summary-icon">◷</span></div><strong class="time-value" id="lastUpdated">—</strong><small>Auto-refresh every 10 seconds</small></article>
+    </section>
+    <section class="section" id="servers"><div class="section-title"><div><div class="eyebrow">INFRASTRUCTURE</div><h2>Managed servers</h2></div><span class="section-note">Live Zabbix metrics + agent diagnostics</span></div>
+      <div class="server-grid" id="serverGrid">
+        <article class="server-card skeleton">Loading infrastructure…</article>
+      </div>
+    </section>
+    <section class="section agent-section" id="agent"><div class="section-title"><div><div class="eyebrow">AGENTIC OPERATIONS</div><h2>AI investigation & remediation</h2><p class="section-sub">The agent gathers evidence, explains the fault, proposes an allowlisted action and waits for your approval.</p></div><span class="approval-chip">HUMAN APPROVAL ENABLED</span></div>
+      <div class="agent-layout">
+        <article class="panel demo-panel"><div class="panel-heading"><div><span class="eyebrow">FAULT INJECTION LAB</span><h3>Run a controlled demo</h3></div><span class="lab-tag">ISOLATED BACKEND</span></div>
+          <p>Stop only the demo application container to simulate an outage. The agent will immediately investigate using SSH, Zabbix and Loki.</p>
+          <div class="fault-target"><div class="target-icon">⌘</div><div><b>Backend · devops-demo-app</b><small>Action: docker stop devops-demo-app</small></div><span class="target-status" id="faultState">NORMAL</span></div>
+          <button class="btn btn-danger btn-block" id="injectBtn">⚡ Inject backend failure</button>
+          <button class="btn btn-outline btn-block" id="investigateBtn">✧ Investigate current state</button>
+          <div class="safety-note">Demo-only operation. Click confirms the fault injection; it temporarily interrupts the demo API.</div>
+        </article>
+        <article class="panel diagnosis-panel"><div class="panel-heading"><div><span class="eyebrow">AI DIAGNOSIS</span><h3 id="diagnosisTitle">Waiting for investigation</h3></div><span class="state-chip" id="diagnosisState">IDLE</span></div>
+          <p id="diagnosisSummary" class="diagnosis-summary">Run an investigation or inject a demo fault to start the agent workflow.</p>
+          <div id="findings" class="findings empty">No findings yet.</div>
+          <div class="plan-area" id="planArea"><div class="empty-plan">A remediation plan will appear here when a service failure is confirmed.</div></div>
+        </article>
+      </div>
+      <div class="workflow" id="workflow"><div class="step active"><span>1</span><b>Observe</b><small>Zabbix · Loki · SSH</small></div><div class="step"><span>2</span><b>Reason</b><small>Mistral analysis</small></div><div class="step"><span>3</span><b>Plan</b><small>Allowlisted action</small></div><div class="step"><span>4</span><b>Approve</b><small>Human decision</small></div><div class="step"><span>5</span><b>Execute</b><small>SSH command</small></div><div class="step"><span>6</span><b>Verify</b><small>Health checks</small></div></div>
+      <div class="result-banner" id="resultBanner" hidden></div>
+    </section>
+    <section class="section" id="activity"><div class="section-title"><div><div class="eyebrow">OBSERVABILITY</div><h2>Recent activity</h2></div><a class="text-link" href="/docs" target="_blank" rel="noreferrer">API documentation ↗</a></div>
+      <div class="activity-grid"><article class="panel"><div class="panel-heading"><h3>Agent event timeline</h3><span class="section-note" id="timelineCount">0 events</span></div><div class="timeline" id="timeline"><div class="empty">No agent activity yet.</div></div></article><article class="panel"><div class="panel-heading"><h3>Recent logs</h3><span class="section-note">Loki · last 15 min</span></div><div class="log-list" id="logList"><div class="empty">Loading logs…</div></div></article></div>
+    </section>
+    <footer>AI DevOps Control Center <span>·</span> Built with FastAPI, Zabbix, Loki, Grafana and Ollama</footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/static/app.js"></script>
+</body></html>

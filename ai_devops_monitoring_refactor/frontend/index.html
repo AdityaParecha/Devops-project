@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI DevOps Control Center</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <div class="eyebrow">AUTONOMOUS DEVOPS PLATFORM</div>
+    <h1>AI DEVOPS CONTROL CENTER</h1>
+    <p>Incident Detection • AI Decision • Automated Remediation • Verification</p>
+  </div>
+  <div class="live"><span></span> LIVE</div>
+</header>
+
+<section class="status-grid">
+  <div class="card"><div class="label">Frontend</div><div id="frontendStatus" class="big unknown">● UNKNOWN</div></div>
+  <div class="card"><div class="label">Backend</div><div id="backendStatus" class="big unknown">● UNKNOWN</div></div>
+  <div class="card"><div class="label">Database</div><div id="databaseStatus" class="big unknown">● UNKNOWN</div></div>
+  <div class="card"><div class="label">AI Agent</div><div id="agentStatus" class="big agent">READY</div></div>
+</section>
+
+<section class="card">
+  <div class="section-head">
+    <div><div class="label">INFRASTRUCTURE</div><h2>Server Resource Monitoring</h2></div>
+    <div id="lastCheck" class="muted">Last check: --</div>
+  </div>
+
+  <div class="server-grid">
+    <div class="server-card">
+      <div class="server-head">
+        <div><h3>Frontend Server</h3><span>10.10.10.11</span></div>
+        <b id="frontendVm" class="pill">UNKNOWN</b>
+      </div>
+      <div class="metric"><span>CPU</span><strong id="frontendCpu">--</strong><div class="bar"><i id="frontendCpuBar"></i></div></div>
+      <div class="metric"><span>RAM</span><strong id="frontendRam">--</strong><div class="bar"><i id="frontendRamBar"></i></div></div>
+      <div class="metric"><span>Disk</span><strong id="frontendDisk">--</strong><div class="bar"><i id="frontendDiskBar"></i></div></div>
+      <div id="frontendDetails" class="details">Uptime: --</div>
+    </div>
+
+    <div class="server-card">
+      <div class="server-head">
+        <div><h3>Backend Server</h3><span>10.10.10.12</span></div>
+        <b id="backendVm" class="pill">UNKNOWN</b>
+      </div>
+      <div class="metric"><span>CPU</span><strong id="backendCpu">--</strong><div class="bar"><i id="backendCpuBar"></i></div></div>
+      <div class="metric"><span>RAM</span><strong id="backendRam">--</strong><div class="bar"><i id="backendRamBar"></i></div></div>
+      <div class="metric"><span>Disk</span><strong id="backendDisk">--</strong><div class="bar"><i id="backendDiskBar"></i></div></div>
+      <div id="backendDetails" class="details">Uptime: --</div>
+    </div>
+
+    <div class="server-card">
+      <div class="server-head">
+        <div><h3>Database Server</h3><span>10.10.10.13</span></div>
+        <b id="databaseVm" class="pill">UNKNOWN</b>
+      </div>
+      <div class="metric"><span>CPU</span><strong id="databaseCpu">--</strong><div class="bar"><i id="databaseCpuBar"></i></div></div>
+      <div class="metric"><span>RAM</span><strong id="databaseRam">--</strong><div class="bar"><i id="databaseRamBar"></i></div></div>
+      <div class="metric"><span>Disk</span><strong id="databaseDisk">--</strong><div class="bar"><i id="databaseDiskBar"></i></div></div>
+      <div id="databaseDetails" class="details">Uptime: --</div>
+    </div>
+  </div>
+</section>
+
+<section class="two-column">
+  <div class="card">
+    <div class="label">DEMO CONTROLS</div>
+    <h2>Incident Simulation</h2>
+    <div class="controls">
+      <button class="danger" onclick="injectFault()">INJECT BACKEND FAILURE</button>
+      <button class="primary" onclick="runRemediation()">RUN AI REMEDIATION</button>
+    </div>
+    <div id="actionResult" class="action-result"></div>
+  </div>
+
+  <div class="card">
+    <div class="label">INCIDENT</div>
+    <h2 id="incident">No active incident</h2>
+    <div id="action" class="muted">No AI action yet</div>
+    <div id="verification" class="verification"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="label">PIPELINE STATUS</div><h2>Monitoring & AI Layers</h2><div id="pipelineSummary" class="muted">Waiting for first monitoring cycle...</div>
+</section>
+
+<section class="card">
+  <div class="label">AUTONOMOUS RESPONSE</div>
+  <h2>Incident Timeline</h2>
+  <div id="timeline" class="timeline"></div>
+</section>
+
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
