@@ -1,0 +1,7 @@
+* text=auto
+# Shell scripts run on Linux servers; CRLF line endings would break them.
+*.sh text eol=lf
+*.alloy text eol=lf
+*.png binary
+*.pdf binary
+*.pptx binary
